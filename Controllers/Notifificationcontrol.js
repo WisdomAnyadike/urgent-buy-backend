@@ -13,6 +13,7 @@ const createNotification = async (req, res) => {
         res.status(400).send({ message: "all fields are mandatory" })
     } else {
         try {
+            console.log('working');
             const validateProduct = await NotificationModel.findOne({ ProductName })
             if (!validateProduct) {
                 const UpdateProduct = await NotificationModel.create({
