@@ -1,6 +1,6 @@
 const nodeMailer = require('nodemailer')
 
-const sendUserOtp = async( Otp , FullName , Email)=> {
+const sendUserOtp = async( Otp , FullName , Email)=> { 
  const messageTemplate = `<div>
  <div>
    <h2 style="color: red;"> Reset Your Password </h2>

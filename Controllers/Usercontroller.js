@@ -7,7 +7,7 @@ let genRandomNum = ()=> {
     let six = ''
 
     for (let index = 0; index < 6; index++) {
-        let randomNum = Math.floor(Math.random() * 10)
+        let randomNum = Math.floor(Math.random()  * 10)//0-9 0.00 -0.99
         six += randomNum  
       
   }
@@ -17,7 +17,8 @@ let genRandomNum = ()=> {
 
 
 const SignUp = async (req, res) => {
-    const { FullName, Email, Password } = req.body
+    const {FullName , Email , Password} = req.body
+
     if (!FullName || !Email || !Password) {
         res.status(400).send({ message: 'All fields are mandatory' })
     }
@@ -194,7 +195,7 @@ const editUserInfo = async(req, res)=> {
             try {
            const  validateEmail = await userModel.findOne({Email})
             if(!validateEmail){
-                res.status(400).send({message:"User doesnt exist"})  
+                res.status(400).send({message:"User doesnt exist , Sign up"})  
             }else{
                 let userOtp = genRandomNum()
             sendUserOtp( userOtp , validateEmail.FullName , Email )
@@ -218,6 +219,7 @@ const editUserInfo = async(req, res)=> {
             try {
                 const hashedPassword = await bcrypt.hash(Password , 10)
                 const checkEmail = await userModel.findOneAndUpdate({Email:theEmail} , {
+                    
                     Password: hashedPassword
                 } , {new:true})
                 if(!checkEmail){
@@ -234,5 +236,21 @@ const editUserInfo = async(req, res)=> {
     }
 
 
+    const getUsers = async(req , res)=> {
+        try {
+       const users = await userModel.find()
+            if(!users){
+                res.status(400).send({message:'couldnt fetch user data' , status:false})
+            }else{
+                res.status(200).send({message:'Users fetched successfully' , status:'okay' ,  data:users })
+            }
+            
+        } catch (error) {
+            res.status(500).send({message:'Internal server error' , status:false }) 
+            console.log('fetching error' , error);
+        }
+    }
 
-module.exports = {SignUp , logIn , editPassword , editUserInfo , deleteAccount , sendOtp , changePassword}
+
+
+module.exports = {SignUp , logIn , editPassword , editUserInfo , deleteAccount , sendOtp , changePassword , getUsers}

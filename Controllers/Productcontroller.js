@@ -10,6 +10,10 @@ const createProduct = async(req,res)=> {
         res.status(400).send({message:'all fields are mandatory'})
 
     }else {
+      const  validateProduct = productModel.findOne({productName})
+      if(validateProduct){
+        res.status(400).send({message:'all fields are mandatory'})
+      }else {
         try {
             const imageUpload = await cloudinary.uploader.upload(productImage, {folder: 'Urgent buy images' })
             const productLink = imageUpload.secure_url
@@ -32,6 +36,11 @@ const createProduct = async(req,res)=> {
             res.status(500).send({message:"internal server error" }) 
             console.log('server error:', error );
         }
+
+
+      }
+
+      
     }
 
 
@@ -98,4 +107,35 @@ const getProductByCategory = async (req, res)=> {
 
 }
 
-module.exports = {createProduct , getList , getProductById , getProductByCategory}
+
+const deleteProduct = async(req,res) => {
+    const {id} = req.params.id
+    if(!id){
+        res.status(400).send({message:'id is not provided'})   
+    }else{
+  try {
+    const deletedProduct = productModel.findByIdAndDelete({id})
+    if (!deleteProduct) {
+        res.status(400).send({message:'couldnt delete product , try again'})     
+    }else{
+        res.status(400).send({message:'product deleted successfully' , status:"okay"}) 
+        console.log('deleted product', deletedProduct);
+    }
+    
+  } catch (error) {
+    res.status(400).send({message:"internal server error" } )
+    console.log('server error while deleting', error);
+    
+  }
+
+
+
+
+    }
+
+
+
+
+}
+
+module.exports = {createProduct , getList , getProductById , getProductByCategory , deleteProduct}
