@@ -114,7 +114,7 @@ const deleteProduct = async(req,res) => {
         res.status(400).send({message:'id is not provided'})   
     }else{
   try {
-    const deletedProduct = await productModel.findByIdAndDelete({id})
+    const deletedProduct = await productModel.findByIdAndDelete(id)
     if (!deleteProduct) {
         res.status(400).send({message:'couldnt delete product , try again'})     
     }else{
