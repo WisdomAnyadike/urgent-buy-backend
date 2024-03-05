@@ -100,7 +100,7 @@ const getProductByCategory = async (req, res)=> {
               res.status(200).send({message:"products successfully fetched", status:"okay", product})
           }
       } catch (error) {
-          res.status(400).send({message:"internal server error" } )
+          res.status(500).send({message:"internal server error" } )
           console.log('server error', error);
       }
     }
@@ -118,12 +118,12 @@ const deleteProduct = async(req,res) => {
     if (!deleteProduct) {
         res.status(400).send({message:'couldnt delete product , try again'})     
     }else{
-        res.status(400).send({message:'product deleted successfully' , status:"okay"}) 
+        res.status(200).send({message:'product deleted successfully' , status:"okay"}) 
         console.log('deleted product', deletedProduct);
     }
     
   } catch (error) {
-    res.status(400).send({message:"internal server error" } )
+    res.status(500).send({message:"internal server error" } )
     console.log('server error while deleting', error);
     
   }
