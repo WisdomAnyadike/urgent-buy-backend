@@ -10,7 +10,7 @@ const createProduct = async(req,res)=> {
         res.status(400).send({message:'all fields are mandatory'})
 
     }else {
-      const  validateProduct = productModel.findOne({productName})
+      const  validateProduct = await productModel.findOne({productName})
       if(validateProduct){
         res.status(400).send({message:'product already exists'})
       }else {
