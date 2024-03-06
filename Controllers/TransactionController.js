@@ -62,4 +62,20 @@ if(paymentResponse.data.data.status !== 'success'){
 
 }
 
-module.exports = CreateTransaction
+
+const getTransactions = async(req , res)=> {
+    try {
+   const Transactions = await transactionModel.find()
+        if(!users){
+            res.status(400).send({message:'couldnt fetch transactions' , status:false})
+        }else{
+            res.status(200).send({message:'Transactions fetched successfully' , status:'okay' ,  data:Transactions })
+        }
+        
+    } catch (error) {
+        res.status(500).send({message:'Internal server error' , status:false }) 
+        console.log('fetching error' , error);
+    }
+}
+
+module.exports = {CreateTransaction , getTransactions}
