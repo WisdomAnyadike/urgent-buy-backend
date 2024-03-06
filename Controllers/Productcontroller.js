@@ -12,7 +12,7 @@ const createProduct = async(req,res)=> {
     }else {
       const  validateProduct = productModel.findOne({productName})
       if(validateProduct){
-        res.status(400).send({message:'all fields are mandatory'})
+        res.status(400).send({message:'product already exists'})
       }else {
         try {
             const imageUpload = await cloudinary.uploader.upload(productImage, {folder: 'Urgent buy images' })
