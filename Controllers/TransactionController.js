@@ -24,6 +24,7 @@ console.log('payment response:' , paymentResponse.data);
 
 if(paymentResponse.data.data.status !== 'success'){
     res.status(400).send({message:" Oops , Payment not completed , try again" , status:false })
+  
 } else {
 
     try {
@@ -65,11 +66,11 @@ if(paymentResponse.data.data.status !== 'success'){
 
 const getTransactions = async(req , res)=> {
     try {
-   const Transactions = await transactionModel.find()
-        if(!users){
+   const transactions = await transactionModel.find()
+        if(!transactions){
             res.status(400).send({message:'couldnt fetch transactions' , status:false})
         }else{
-            res.status(200).send({message:'Transactions fetched successfully' , status:'okay' ,  data:Transactions })
+            res.status(200).send({message:'Transactions fetched successfully' , status:'okay' ,  data:transactions })
         }
         
     } catch (error) {
