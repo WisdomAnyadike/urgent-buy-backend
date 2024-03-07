@@ -251,6 +251,116 @@ const editUserInfo = async(req, res)=> {
         }
     }
 
+    const getUsersByDateRange = async ( startDate, endDate) =>  {
+        try {
+            const Users = await userModel.find({
+                createdAt: {
+                    $gte: startDate,
+                    $lt: endDate
+                }
+            });
+            return Users
+        } catch (error) {
+            res.status(400).send({message:'internal server error ' , status: false })
+            console.log( 'error getting transaction by day' , error)
+        }
+    }
+    
+    const getTodaysUsers = async (req, res) => {
+           try {
+            const startDate = new Date();
+            startDate.setHours(0, 0, 0, 0); // Set start time to the beginning of today
+            const endDate = new Date();
+            endDate.setHours(23, 59, 59, 999); // Set end time to the end of today
+            const Users = await getUsersByDateRange(startDate, endDate);
+            if(!Users){
+                res.status(400).send({message:'couldnt get todays Users' , status: false })   
+            }
+            res.status(200).send({ message: 'Todays Users fetched successfully', status: 'okay', data: Users });
+        } catch (error) {
+            res.status(500).send({ message: 'Internal server error', status: false });
+        }
+    }
+    
+    const getYesterdaysUsers = async (req, res) => {
+        try {
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - 1); // Set start date to yesterday
+            startDate.setHours(0, 0, 0, 0);
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() - 1); // Set end date to yesterday
+            endDate.setHours(23, 59, 59, 999);
+            const Users = await getUsersByDateRange(startDate, endDate);
+            if(!Users){
+                res.status(400).send({message:'couldnt get yesterdays Users' , status: false })   
+            }
+            res.status(200).send({ message: 'yesterdays Users fetched successfully', status: 'okay', data: Users });    
+        } catch (error) {
+            res.status(500).send({ message: 'Internal server error', status: false });
+        }
+      
+    }
+    
+    const getDayBeforeYesterdaysUsers = async (req,res) => {
+        try {
+            const startDate = new Date();
+        startDate.setDate(startDate.getDate() - 2); // Set start date to the day before yesterday
+        startDate.setHours(0, 0, 0, 0);
+        const endDate = new Date();
+        endDate.setDate(endDate.getDate() - 2); // Set end date to the day before yesterday
+        endDate.setHours(23, 59, 59, 999);
+        const Users = await getUsersByDateRange(startDate, endDate);
+        if(!Users){
+            res.status(400).send({message:'couldnt get dayBeforeYesterdays Users' , status: false })   
+        }
+        res.status(200).send({ message: 'dayBeforeYesterdays Users fetched successfully', status: 'okay', data: Users }); 
+        } catch (error) {
+            res.status(500).send({ message: 'Internal server error', status: false });
+        }
+        
+    }
+    
+    const getDayBeforeDayBeforeYesterdaysUsers = async (req, res) => {
+        try {
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - 3); // Set start date to the day before yesterday
+            startDate.setHours(0, 0, 0, 0);
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() - 3); // Set end date to the day before yesterday
+            endDate.setHours(23, 59, 59, 999);
+            const Users = await getUsersByDateRange(startDate, endDate);
+            if(!Users){
+                res.status(400).send({message:'couldnt get daybeforeDayBeforeyesterdays Users' , status: false })   
+            }
+            res.status(200).send({ message: 'daybeforeDayBeforeyesterdays Users fetched successfully', status: 'okay', data: Users }); 
+            
+        } catch (error) {
+            res.status(500).send({ message: 'Internal server error', status: false });
+        }
+       
+    }
+    
+    const getDay5Users = async (req, res) => {
+        try {
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - 4); // Set start date to the day before yesterday
+            startDate.setHours(0, 0, 0, 0);
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() - 4); // Set end date to the day before yesterday
+            endDate.setHours(23, 59, 59, 999);
+            const Users = await getUsersByDateRange(startDate, endDate);
+            if(!Users){
+                res.status(400).send({message:'couldnt get lastday Users' , status: false })   
+            }
+            res.status(200).send({ message: 'Day5 Users fetched successfully', status: 'okay', data: Users }); 
+            
+        } catch (error) {
+            res.status(500).send({ message: 'Internal server error', status: false });
+        }
+       
+    }
+    
 
 
-module.exports = {SignUp , logIn , editPassword , editUserInfo , deleteAccount , sendOtp , changePassword , getUsers}
+
+module.exports = {SignUp , logIn , editPassword , editUserInfo , deleteAccount , sendOtp , changePassword , getUsers , getTodaysUsers, getYesterdaysUsers, getDayBeforeYesterdaysUsers , getDayBeforeDayBeforeYesterdaysUsers , getDay5Users}

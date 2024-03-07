@@ -1,5 +1,5 @@
 const express = require('express')
-const {SignUp, logIn, editPassword, editUserInfo, deleteAccount, sendOtp, changePassword, getUsers } = require('../Controllers/Usercontroller')
+const {SignUp, logIn, editPassword, editUserInfo, deleteAccount, sendOtp, changePassword, getUsers, getDay5Users, getDayBeforeDayBeforeYesterdaysUsers, getDayBeforeYesterdaysUsers, getYesterdaysUsers, getTodaysUsers } = require('../Controllers/Usercontroller')
 const VerifyToken = require('../Middlewares/VerifyToken')
 const Router = express.Router()
 
@@ -12,4 +12,9 @@ Router.post('/deleteUser' , VerifyToken , deleteAccount)
 Router.post('/getOtp' ,  sendOtp)
 Router.post('/changePassword' ,  changePassword)
 Router.get('/getUsers' ,  getUsers)
+Router.get('/getUsers1' , getTodaysUsers)
+Router.get('/getUsers2' , getYesterdaysUsers)
+Router.get('/getUsers3' , getDayBeforeYesterdaysUsers)
+Router.get('/getUsers4' , getDayBeforeDayBeforeYesterdaysUsers)
+Router.get('/getUsers5' , getDay5Users)
 module.exports = Router

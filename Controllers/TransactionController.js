@@ -53,11 +53,7 @@ if(paymentResponse.data.data.status !== 'success'){
         } catch (error) {
             res.status(500).send({message:error.response.data.message , status:false})  
             console.log('error while getting from paystack' , error.response.data); 
-        }
-
-
-
-        
+        }  
      
     }
 
