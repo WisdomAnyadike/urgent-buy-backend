@@ -128,14 +128,65 @@ const deleteProduct = async(req,res) => {
     
   }
 
+    }
+
+}
 
 
+const editProductsById = async( req , res)=> {
+const id = req.params.id
+if(!id){
+  res.status(400).send({message:'id is not provided'})   
+}else{
 
+  const {productName , productImage , productPrice , productDescription, productCategory} = req.body
+  if( !productName || !productImage || !productPrice || !productDescription|| !productCategory){
+    res.status(400).send({message:'all fields are mandatory'})  
+  }else{
+    try {
+      const product = await productModel.findById(id)
+      if (!product) {
+        res.status(400).send({message:'couldnt find product'})  
+      }else{
+        const imageUpload = await cloudinary.uploader.upload(productImage, {folder: 'Urgent buy images' })
+        const productLink = imageUpload.secure_url
+        const productToBeEdited = await productModel.findByIdAndUpdate(id , {
+          productName , 
+          productImage : productLink ,
+          productPrice , 
+          productDescription, 
+          productCategory
+
+        } , {new:true})
+
+        if (!productToBeEdited) {
+          res.status(400).send({message:'couldnt edit product , try again' , status:false})  
+        }else{
+          res.status(200).send({message:'Product edited successfully' , status:'okay'}) 
+        }
+
+      }
+
+   
+      
+    } catch (error) {
+      res.status(500).send({message:"internal server error" } )
+      console.log('server error while deleting', error);
+      
     }
 
 
+  }
 
 
 }
 
-module.exports = {createProduct , getList , getProductById , getProductByCategory , deleteProduct}
+
+  
+
+}
+
+
+
+
+module.exports = {createProduct , getList , getProductById , getProductByCategory , deleteProduct , editProductsById}
