@@ -185,5 +185,25 @@ const getDay5Transactions = async (req, res) => {
 }
 
 
-module.exports = {CreateTransaction , getTransactions ,getTodaysTransactions, getYesterdaysTransactions, getDayBeforeYesterdaysTransactions , getDayBeforeDayBeforeYesterdaysTransactions , getDay5Transactions}
+const getLastThirtyDaysTransactions = async (req, res) => {
+    try {
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - 30); // Set start date to 30days ago
+        startDate.setHours(0, 0, 0, 0);
+        const endDate = new Date();
+        endDate.setHours(23, 59, 59, 999);  // Set end date to today
+    
+        const transactions = await getTransactionsByDateRange(startDate, endDate);
+        if(!transactions){
+            res.status(400).send({message:'couldnt get yesterdays transactions' , status: false })   
+        }
+        res.status(200).send({ message: 'transactions from the last thirty day fetched successfully', status: 'okay', data: transactions });    
+    } catch (error) {
+        res.status(500).send({ message: 'Internal server error', status: false });
+    }
+  
+}
+
+
+module.exports = {CreateTransaction , getTransactions ,getTodaysTransactions, getYesterdaysTransactions, getDayBeforeYesterdaysTransactions , getDayBeforeDayBeforeYesterdaysTransactions , getDay5Transactions , getLastThirtyDaysTransactions }
 
