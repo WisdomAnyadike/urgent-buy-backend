@@ -123,12 +123,12 @@ const editUserInfo = async(req, res)=> {
     if (!user) {
         res.status(400).send({message:"Authentication not provided"})
     }else{
-        const {FullName , Email} = req.body
+        const {FullName , Email , Picture} = req.body
        const validateEmail = await userModel.findOne({Email})
      
         if(!FullName || !Email){
             res.status(400).send({message:"All Fields is mandatory"})
-        } else if( FullName == user.FullName && Email == user.Email){
+        } else if( FullName == user.FullName && Email == user.Email && Picture == user.Picture){
             res.status(400).send({message:"Update at least one field to continue"})
         }
         else if (validateEmail && (validateEmail.Email !== user.Email)) {
@@ -137,9 +137,10 @@ const editUserInfo = async(req, res)=> {
     
         else{
             try {    
-             const foundUser = await userModel.findOneAndUpdate({Email:user.Email} , {
-                        FullName, 
+             const foundUser = await userModel.findOneAndUpdate({Email:user.Email} , { $set:
+                       {FullName, 
                         Email,
+                        Picture}
                     } , { new: true})
         if (!foundUser) {
             res.status(400).send({message:"Couldnt update user information"}) 
@@ -148,6 +149,7 @@ const editUserInfo = async(req, res)=> {
             console.log("updated userinfo:" , {
                 FullName, 
                 Email,
+                Picture
             } );
         }              
             } catch (error) {

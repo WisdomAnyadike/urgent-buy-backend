@@ -6,16 +6,18 @@ const Router = require('./Routes/Userroutes');
 const Router2 = require('./Routes/Productrouts');
 const Router3 = require('./Routes/Notifyroutes');
 const Router4 = require('./Routes/Transactionroutes');
+const Router5 = require('./Routes/AdminRoutes');
 
 
 const app = express()
 const port = 4000 || process.env.Port
-app.use(express.json())
+app.use(express.json({extended: true , limit:'500mb'}))
 app.use(cors({origin:'*'}))
 app.use('/Api/User' , Router )
 app.use('/Api/Products' , Router2  )
 app.use('/Api/Notify' , Router3  )
 app.use('/Api/Transaction' , Router4 )
+app.use('/Api/Admin' , Router5 )
 
 
 

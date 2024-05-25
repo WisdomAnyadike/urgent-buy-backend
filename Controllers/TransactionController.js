@@ -186,3 +186,4 @@ const getDay5Transactions = async (req, res) => {
 
 
 module.exports = {CreateTransaction , getTransactions ,getTodaysTransactions, getYesterdaysTransactions, getDayBeforeYesterdaysTransactions , getDayBeforeDayBeforeYesterdaysTransactions , getDay5Transactions}
+
