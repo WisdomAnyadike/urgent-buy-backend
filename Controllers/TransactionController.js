@@ -1,5 +1,6 @@
 const transactionModel = require("../Models/TransactionModel")
 const axios = require('axios')
+const userModel = require("../Models/Usermodel")
 const paystackSecret = process.env.paystackSecret
 
 
@@ -192,12 +193,26 @@ const getLastThirtyDaysTransactions = async (req, res) => {
         startDate.setHours(0, 0, 0, 0);
         const endDate = new Date();
         endDate.setHours(23, 59, 59, 999);  // Set end date to today
-
+        let transactionPerUser = []
         const transactions = await getTransactionsByDateRange(startDate, endDate);
-        if (!transactions || transactions.length === 0) {
+        const users = await userModel.find()
+
+
+        if (users && transactions) {
+            users.forEach((user) => {
+                const { FullName } = user
+                const forOneUser = transactions.filter((transaction) => FullName === transaction.transactionUser)
+                transactionPerUser.push({ [FullName]: forOneUser })
+            })
+       
+        }
+        
+
+        if (!transactionPerUser || transactionPerUser.length === 0) {
             return res.status(200).send({ message: 'No transactions found for the last thirty days', status: 'okay', data: [] });
         }
-        res.status(200).send({ message: 'transactions from the last thirty day fetched successfully', status: 'okay', data: transactions });
+        
+        res.status(200).send({ message: 'transactions from the last thirty day fetched successfully', status: 'okay', data: transactionPerUser });
     } catch (error) {
         res.status(500).send({ message: 'Internal server error', status: false });
     }
