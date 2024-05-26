@@ -202,7 +202,7 @@ const getLastThirtyDaysTransactions = async (req, res) => {
             users.forEach((user) => {
                 const { FullName } = user
                 const forOneUser = transactions.filter((transaction) => FullName === transaction.transactionUser)
-                transactionPerUser.push({   user : FullName , transactionArr : forOneUser }  )
+                transactionPerUser.push({   user , transactionArr : forOneUser }  )
             })
        
         }
