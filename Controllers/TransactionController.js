@@ -202,7 +202,7 @@ const getLastThirtyDaysTransactions = async (req, res) => {
             users.forEach((user) => {
                 const { FullName } = user
                 const forOneUser = transactions.filter((transaction) => FullName === transaction.transactionUser)
-                transactionPerUser.push({ [FullName]: forOneUser })
+                transactionPerUser.push({   user : [FullName] , transactionArr : forOneUser }  )
             })
        
         }
@@ -211,7 +211,7 @@ const getLastThirtyDaysTransactions = async (req, res) => {
         if (!transactionPerUser || transactionPerUser.length === 0) {
             return res.status(200).send({ message: 'No transactions found for the last thirty days', status: 'okay', data: [] });
         }
-        
+
         res.status(200).send({ message: 'transactions from the last thirty day fetched successfully', status: 'okay', data: transactionPerUser });
     } catch (error) {
         res.status(500).send({ message: 'Internal server error', status: false });
