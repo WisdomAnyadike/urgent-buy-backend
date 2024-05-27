@@ -202,8 +202,9 @@ const getLastThirtyDaysTransactions = async (req, res) => {
             users.forEach((user) => {
                 const { FullName } = user
                 const forOneUser = transactions.filter((transaction) => FullName === transaction.transactionUser)
-                let transactionValue = forOneUser.reduce((a, b) => a.transactionAmount + b.transactionAmount, 0)
-                transactionPerUser.push({ user , transactionValue })
+                let transactionValue = forOneUser.reduce((a, b) => { return  a + b.transactionAmount , 0} )
+                console.log(transactionValue);
+                transactionPerUser.push({ user , transactionValue : transactionValue === null ? 0 : transactionValue  })
             })
 
         }
