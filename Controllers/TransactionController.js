@@ -202,11 +202,10 @@ const getLastThirtyDaysTransactions = async (req, res) => {
             users.forEach((user) => {
                 const { FullName } = user
                 const forOneUser = transactions.filter((transaction) => FullName === transaction.transactionUser)
-                transactionPerUser.push({ user, transactionArr: forOneUser.reduce((a, b) => a.transactionAmount + b.transactionAmount, 0) })
+                transactionPerUser.push({ user, transactionValue: forOneUser.reduce((a, b) => a.transactionAmount + b.transactionAmount, 0) })
             })
 
         }
-
 
         if (!transactionPerUser || transactionPerUser.length === 0) {
             return res.status(200).send({ message: 'No transactions found for the last thirty days', status: 'okay', data: [] });
