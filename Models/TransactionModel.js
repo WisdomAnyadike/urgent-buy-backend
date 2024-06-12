@@ -5,7 +5,10 @@ const TransactionSchema = new mongoose.Schema({
     transactionReference : {type: String , required:true},
     transactionStatus : {type: String , required:true} ,
     transactionUser : {type: String , required:true} ,
-    transactionType: {type: String , required:true} 
+    transactionType: {type: String , required:true} ,
+    transactionTag : {type: String , required:true} ,
+    transactionOrder : {type: String  , required:true} ,
+    transactionEmail : {type: String  , required:true} 
 } , {timestamps:true})
 
 

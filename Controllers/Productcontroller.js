@@ -150,6 +150,7 @@ if(!id){
       }else{
         const imageUpload = await cloudinary.uploader.upload(productImage, {folder: 'Urgent buy images' })
         const productLink = imageUpload.secure_url
+        
         const productToBeEdited = await productModel.findByIdAndUpdate(id , {
           productName , 
           productImage : productLink ,
