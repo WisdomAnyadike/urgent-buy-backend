@@ -131,7 +131,7 @@ const CreateTransaction = async (req, res) => {
             const createdTransaction = await transactionModel.create({
                 transactionAmount,
                 transactionReference: genRef(),
-                transactionStatus: 'pending',
+                transactionStatus: 'pending...',
                 transactionUser,
                 transactionTag,
                 transactionOrder,
