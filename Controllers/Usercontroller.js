@@ -29,8 +29,8 @@ const SignUp = async (req, res) => {
         } else {
             const hashedPassword = await bcrypt.hash(Password, 10)
             const createUser = await userModel.create({
-                FullName,
-                Email,
+                FullName:FullName.toLowerCase(),
+                Email: Email.toLowerCase(),
                 Password: hashedPassword
             })
             if (createUser) {
@@ -54,7 +54,8 @@ const logIn = async(req, res)=> {
         res.status(400).send({message:'All fields are mandatory'})    
     }
     try {
-        const findUser = await userModel.findOne({Email})
+        
+        const findUser = await userModel.findOne({Email:Email.toLowerCase()})
         if (!findUser) {
           res.status(400).send({message:"Account doesnt exist , try creating an account" , status:"notcreated"}) 
         }else{
