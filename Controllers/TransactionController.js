@@ -1,6 +1,7 @@
 const transactionModel = require("../Models/TransactionModel")
 const axios = require('axios')
 const userModel = require("../Models/Usermodel")
+const { orderPendingMssg, finalOrderStatusMssg } = require('../Config/Mailer')
 
 
 function genRef() {
@@ -123,7 +124,7 @@ function genRef() {
 
 
 const CreateTransaction = async (req, res) => {
-    const { transactionAmount, transactionUser, transactionTag, transactionOrder , transactionEmail } = req.body
+    const { transactionAmount, transactionUser, transactionTag, transactionOrder, transactionEmail } = req.body
     if (!transactionAmount || !transactionUser || !transactionTag || !transactionOrder || !transactionEmail) {
         res.status(400).send({ message: "a cumpulsory field is not provided" })
     } else {
@@ -142,6 +143,7 @@ const CreateTransaction = async (req, res) => {
             if (!createdTransaction) {
                 res.status(400).send({ message: "Unable to create transaction", status: false })
             } else {
+                orderPendingMssg(transactionUser, transactionEmail, createdTransaction.transactionReference, transactionAmount, createdTransaction.createdAt.toLocaleDateString(), transactionOrder, transactionTag)
                 res.status(200).send({ message: 'Verification successful', status: 'okay', createdTransaction })
                 console.log('Created Transaction', createdTransaction);
             }
@@ -341,6 +343,7 @@ let confirmPaymentStatus = async (req, res) => {
                 if (!updateStatus) {
                     res.status(400).send({ message: "unable to update status", status: false })
                 } else {
+                    finalOrderStatusMssg(updateStatus.FullName, updateStatus.Email, updateStatus.transactionReference, updateStatus.transactionAmount, updateStatus.createdAt, updateStatus.transactionOrder, updateStatus.transactionTag, status)
                     res.status(200).send({ message: "status updated successfully", status: 'okay' })
                 }
 
@@ -362,7 +365,7 @@ const getUserTransactions = async (req, res) => {
         return res.status(401).send({ message: 'Authentication not provided, try logging in' });
     }
     try {
-        const userTransactions = await transactionModel.find({ transactionEmail : user.Email });
+        const userTransactions = await transactionModel.find({ transactionEmail: user.Email });
 
         if (!userTransactions || userTransactions.length === 0) {
             return res.status(404).send({ message: 'No transactions found', status: false });
