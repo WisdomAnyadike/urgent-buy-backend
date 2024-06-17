@@ -1,5 +1,6 @@
 const adminModel = require("../Models/AdminModel")
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 
 const adminSignUp = async(req, res)=> {
@@ -42,11 +43,18 @@ const adminLogin = async(req, res) => {
         if (!findAdmin) {
             res.status(400).send({message:'Page Restricted'})   
         }else{
-            const comparePasssword = await bcrypt.compare(  PASSWORD , findAdmin.PASSWORD )  
+            const comparePasssword = await bcrypt.compare(  PASSWORD , findAdmin.PASSWORD ) 
+            const secretKey = process.env.Jwt_SECRET
+            const genToken = jwt.sign({
+                user: {
+                    FullName: findAdmin.FullName,
+                    Email: findAdmin.Email
+                }
+            }, secretKey, { expiresIn: '1d' }) 
            if(!comparePasssword){
             res.status(400).send({message:'Password is incorrect'}) 
            }else {
-            res.status(200).send({message:' Admin Login Successful' , status:"okay"}) 
+            res.status(200).send({message:' Admin Login Successful' , status:"okay" , genToken}) 
             console.log('logged in admin' , findAdmin);
            }
         }
