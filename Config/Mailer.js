@@ -61,7 +61,7 @@ const sendUserOtp = async (Otp, FullName, Email) => {
 const signUpMssg = async (FullName, Email) => {
   const messageTemplate = `<div>
   <div>
-    <h2 style="color: red;">     Welcome to [Your App Name]!  </h2>
+    <h2 style="color: red;">     Welcome to Black Diamond Luxe!  </h2>
   </div>
   <ul>
     <li>Name: ${FullName}</li>
@@ -83,7 +83,7 @@ const signUpMssg = async (FullName, Email) => {
     P.S. Follow us on [social media links] for updates and exclusive offers!
     </p>
   </div>
-  <p style="color: black;"><i> Urgent Buy </i></p>
+  <p style="color: black;"><i> Black Diamond Luxury </i></p>
  </div>
  `
 
@@ -149,13 +149,13 @@ const orderPendingMssg = async (FullName, Email, OrderNumber, TotalAmount, Order
     </p>
     <p>
       Best,
-      The [Your App Name] Team
+      The Black Diamond Luxe Team
     </p>
     <p>
       P.S. Follow us on [social media links] for updates and exclusive offers!
     </p>
   </div>
-  <p style="color: black;"><i>Urgent Buy</i></p>
+  <p style="color: black;"><i> Black Diamond Luxury </i></p>
 </div> `
 
 
@@ -215,7 +215,7 @@ const finalOrderStatusMssg = async (FullName, Email, OrderNumber, TotalAmount, O
   const messageTemplate = `
       <div>
         <div>
-          <h2 style="color: red;">Order Status Update</h2>
+          <h2 style="color: ${status === 'success' ? 'green' : 'red'};">Order Status Update</h2>
         </div>
         <ul>
           <li>Name: ${FullName}</li>
@@ -237,78 +237,13 @@ const finalOrderStatusMssg = async (FullName, Email, OrderNumber, TotalAmount, O
           <p>
             Best regards,
             <br/>
-            The [Your App Name] Team
+            The Black Diamond Luxe Team
           </p>
           <p>
             P.S. Follow us on [social media links] for updates and exclusive offers!
           </p>
         </div>
       </div>`;
-
-      const trasporter = nodeMailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: process.env.GOOGLE_EMAIL,
-          pass: process.env.GOOGLE_PASSWORD
-        }
-      })
-    
-      const mailOptions = {
-        from: process.env.GOOGLE_EMAIL,
-        to: Email,
-        subject ,
-        html: messageTemplate,
-        text: `Hello ${FullName}`
-      }
-    
-      try {
-        trasporter.sendMail(mailOptions)
-        console.log('Email sent successfully');
-    
-      } catch (error) {
-        console.log('Email couldnt send unfortunately', error);
-      }
-    
-};
-
-
-const finalOrderStatusMssg2 = async (FullName, Email, OrderNumber, TotalAmount, OrderDate, Order, tag, status) => {
-  let orders = Order.split(',')
-  const orderItems = orders.map(order => `<li>${order.trim()}</li>`).join('')
-
-  const messageTemplate = `
-      <div>
-        <div>
-          <h2 style="color: red;">Order Status Update</h2>
-        </div>
-        <ul>
-          <li>Name: ${FullName}</li>
-          <li>Email: ${Email}</li>
-          <li>Reference Number: ${OrderNumber}</li>
-          <li>Cashapp Tag: ${tag}</li>
-        </ul>
-        <div>
-          <p>Dear ${FullName},</p>
-          ${statusMessage}
-          <ul>
-            <li>Order Number: ${OrderNumber}</li>
-            <li>Order Date: ${OrderDate}</li>
-            <li>Total Amount: ${TotalAmount}</li>
-          </ul>
-          <ul>
-            ${orderItems}
-          </ul>
-          <p>
-            Best regards,
-            <br/>
-            The [Your App Name] Team
-          </p>
-          <p>
-            P.S. Follow us on [social media links] for updates and exclusive offers!
-          </p>
-        </div>
-      </div>`;
-
 
   const trasporter = nodeMailer.createTransport({
     service: 'gmail',
@@ -321,7 +256,7 @@ const finalOrderStatusMssg2 = async (FullName, Email, OrderNumber, TotalAmount, 
   const mailOptions = {
     from: process.env.GOOGLE_EMAIL,
     to: Email,
-    subject: 'Order Information',
+    subject,
     html: messageTemplate,
     text: `Hello ${FullName}`
   }
@@ -334,12 +269,11 @@ const finalOrderStatusMssg2 = async (FullName, Email, OrderNumber, TotalAmount, 
     console.log('Email couldnt send unfortunately', error);
   }
 
+};
 
 
 
-}
 
 
 
-
-module.exports = { sendUserOtp, signUpMssg, orderPendingMssg, finalOrderStatusMssg, finalOrderStatusMssg2 }
+module.exports = { sendUserOtp, signUpMssg, orderPendingMssg, finalOrderStatusMssg }

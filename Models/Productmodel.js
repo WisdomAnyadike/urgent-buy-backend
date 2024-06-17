@@ -5,7 +5,7 @@ const ProductSchema = new mongoose.Schema({
     productDescription:{type:String , required:true },
     productPrice:{type:Number , required: true} ,
     productImage:{type:String , required: true} ,
-    productCategory:{type:String , required:true , enum : ['Hats' , 'Jackets' , 'Trainers' , 'Womens' , 'Mens']}
+    productCategory:{type:String , required:true , enum : ['Skincare' , 'Cosmetics' , 'Supplements' , 'Womens' , 'Mens']}
    
 } , {timestamps: true})
 
