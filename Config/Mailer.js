@@ -269,6 +269,7 @@ const finalOrderStatusMssg = async (FullName, Email, OrderNumber, TotalAmount, O
       } catch (error) {
         console.log('Email couldnt send unfortunately', error);
       }
+      console.log("something")
     
 };
 
