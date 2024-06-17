@@ -192,26 +192,26 @@ const orderPendingMssg = async (FullName, Email, OrderNumber, TotalAmount, Order
 
 
 const finalOrderStatusMssg = async (FullName, Email, OrderNumber, TotalAmount, OrderDate, Order, tag, status) => {
-  // let orders = Order.split(',');
-  // const orderItems = orders.map(order => `<li>${order.trim()}</li>`).join('');
+  let orders = Order.split(',');
+  const orderItems = orders.map(order => `<li>${order.trim()}</li>`).join('');
 
-  // // Determine the status message and email subject based on the order status
-  // let statusMessage = '';
-  // let subject = '';
+  // Determine the status message and email subject based on the order status
+  let statusMessage = '';
+  let subject = '';
 
-  // if (status === 'success') {
-  //   statusMessage = `
-  //       <p>
-  //         We are pleased to inform you that your order has been successfully processed and will be shipped to you shortly. Below are the details of your order:
-  //       </p>`;
-  //   subject = 'Your Order is Successful';
-  // } else if (status === 'failed') {
-  //   statusMessage = `
-  //       <p>
-  //         We regret to inform you that there was an issue processing your order. Please contact our customer support for further assistance. Below are the details of your order:
-  //       </p>`;
-  //   subject = 'Your Order Processing Failed';
-  // }
+  if (status === 'success') {
+    statusMessage = `
+        <p>
+          We are pleased to inform you that your order has been successfully processed and will be shipped to you shortly. Below are the details of your order:
+        </p>`;
+    subject = 'Your Order is Successful';
+  } else if (status === 'failed') {
+    statusMessage = `
+        <p>
+          We regret to inform you that there was an issue processing your order. Please contact our customer support for further assistance. Below are the details of your order:
+        </p>`;
+    subject = 'Your Order Processing Failed';
+  }
 
   const messageTemplate = `
       <div>
@@ -226,14 +226,14 @@ const finalOrderStatusMssg = async (FullName, Email, OrderNumber, TotalAmount, O
         </ul>
         <div>
           <p>Dear ${FullName},</p>
-          
+          ${statusMessage}
           <ul>
             <li>Order Number: ${OrderNumber}</li>
             <li>Order Date: ${OrderDate}</li>
             <li>Total Amount: ${TotalAmount}</li>
           </ul>
           <ul>
-            
+            ${orderItems}
           </ul>
           <p>
             Best regards,
@@ -257,7 +257,7 @@ const finalOrderStatusMssg = async (FullName, Email, OrderNumber, TotalAmount, O
       const mailOptions = {
         from: process.env.GOOGLE_EMAIL,
         to: Email,
-        subject: '' ,
+        subject ,
         html: messageTemplate,
         text: `Hello ${FullName}`
       }
@@ -269,7 +269,6 @@ const finalOrderStatusMssg = async (FullName, Email, OrderNumber, TotalAmount, O
       } catch (error) {
         console.log('Email couldnt send unfortunately', error);
       }
-      console.log("something")
     
 };
 

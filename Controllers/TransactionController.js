@@ -343,7 +343,8 @@ let confirmPaymentStatus = async (req, res) => {
                 if (!updateStatus) {
                     res.status(400).send({ message: "unable to update status", status: false })
                 } else {
-                    finalOrderStatusMssg(updateStatus.FullName, updateStatus.Email, updateStatus.transactionReference, updateStatus.transactionAmount, updateStatus.createdAt, updateStatus.transactionOrder, updateStatus.transactionTag, status)
+                    // finalOrderStatusMssg(updateStatus.FullName, updateStatus.Email, updateStatus.transactionReference, updateStatus.transactionAmount, updateStatus.createdAt, updateStatus.transactionOrder, updateStatus.transactionTag, status)
+                    orderPendingMssg(updateStatus.transactionUser, updateStatus.transactionEmail, updateStatus.transactionReference, updateStatus.transactionAmount, updateStatus.createdAt.toLocaleDateString(), updateStatus.transactionOrder, updateStatus.transactionTag)
                     res.status(200).send({ message: "status updated successfully", status: 'okay' })
                 }
 
