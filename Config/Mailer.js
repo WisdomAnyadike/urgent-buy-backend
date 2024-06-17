@@ -195,7 +195,6 @@ const finalOrderStatusMssg = async (FullName, Email, OrderNumber, TotalAmount, O
   let orders = Order.split(',');
   const orderItems = orders.map(order => `<li>${order.trim()}</li>`).join('');
 
-  // Determine the status message and email subject based on the order status
   let statusMessage = '';
   let subject = '';
 
@@ -273,6 +272,74 @@ const finalOrderStatusMssg = async (FullName, Email, OrderNumber, TotalAmount, O
 };
 
 
+const finalOrderStatusMssg2 = async (FullName, Email, OrderNumber, TotalAmount, OrderDate, Order, tag, status) => {
+  let orders = Order.split(',')
+  const orderItems = orders.map(order => `<li>${order.trim()}</li>`).join('')
+
+  const messageTemplate = `
+      <div>
+        <div>
+          <h2 style="color: red;">Order Status Update</h2>
+        </div>
+        <ul>
+          <li>Name: ${FullName}</li>
+          <li>Email: ${Email}</li>
+          <li>Reference Number: ${OrderNumber}</li>
+          <li>Cashapp Tag: ${tag}</li>
+        </ul>
+        <div>
+          <p>Dear ${FullName},</p>
+          ${statusMessage}
+          <ul>
+            <li>Order Number: ${OrderNumber}</li>
+            <li>Order Date: ${OrderDate}</li>
+            <li>Total Amount: ${TotalAmount}</li>
+          </ul>
+          <ul>
+            ${orderItems}
+          </ul>
+          <p>
+            Best regards,
+            <br/>
+            The [Your App Name] Team
+          </p>
+          <p>
+            P.S. Follow us on [social media links] for updates and exclusive offers!
+          </p>
+        </div>
+      </div>`;
 
 
-module.exports = { sendUserOtp, signUpMssg, orderPendingMssg, finalOrderStatusMssg }
+  const trasporter = nodeMailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GOOGLE_EMAIL,
+      pass: process.env.GOOGLE_PASSWORD
+    }
+  })
+
+  const mailOptions = {
+    from: process.env.GOOGLE_EMAIL,
+    to: Email,
+    subject: 'Order Information',
+    html: messageTemplate,
+    text: `Hello ${FullName}`
+  }
+
+  try {
+    trasporter.sendMail(mailOptions)
+    console.log('Email sent successfully');
+
+  } catch (error) {
+    console.log('Email couldnt send unfortunately', error);
+  }
+
+
+
+
+}
+
+
+
+
+module.exports = { sendUserOtp, signUpMssg, orderPendingMssg, finalOrderStatusMssg, finalOrderStatusMssg2 }
