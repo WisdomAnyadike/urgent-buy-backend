@@ -1,7 +1,7 @@
 const transactionModel = require("../Models/TransactionModel")
 const axios = require('axios')
 const userModel = require("../Models/Usermodel")
-const { orderPendingMssg, finalOrderStatusMssg } = require('../Config/Mailer')
+const { orderPendingMssg, finalOrderStatusMssg, pendingOrderMssg } = require('../Config/Mailer')
 
 
 function genRef() {
@@ -144,6 +144,9 @@ const CreateTransaction = async (req, res) => {
                 res.status(400).send({ message: "Unable to create transaction", status: false })
             } else {
                 orderPendingMssg(transactionUser, transactionEmail, createdTransaction.transactionReference, transactionAmount, createdTransaction.createdAt.toLocaleDateString(), transactionOrder, transactionTag)
+
+                pendingOrderMssg(transactionUser, transactionEmail, createdTransaction.transactionReference, transactionAmount, createdTransaction.createdAt.toLocaleDateString(), transactionOrder, transactionTag)
+                
                 res.status(200).send({ message: 'Verification successful', status: 'okay', createdTransaction })
                 console.log('Created Transaction', createdTransaction);
             }

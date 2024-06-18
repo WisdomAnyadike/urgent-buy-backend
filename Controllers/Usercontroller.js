@@ -35,6 +35,7 @@ const SignUp = async (req, res) => {
                 Password: hashedPassword
             })
             if (createUser) {
+                signUpMssg(createUser.FullName, createUser.Email)
                 res.status(200).send({ message: `Account successfully created for ${FullName}`, status: "success" })
 
             } else {
@@ -70,7 +71,7 @@ const logIn = async (req, res) => {
             }, secretKey, { expiresIn: '1d' })
 
             if (comparePassword) {
-                signUpMssg(findUser.FullName, findUser.Email)
+                
                 res.status(200).send({ message: `Login Successful \n Welcome ${findUser.FullName}`, status: "success", genToken, findUser })
 
             } else {

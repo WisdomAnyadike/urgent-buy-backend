@@ -61,7 +61,7 @@ const sendUserOtp = async (Otp, FullName, Email) => {
 const signUpMssg = async (FullName, Email) => {
   const messageTemplate = `<div>
   <div>
-    <h2 style="color: red;">     Welcome to Black Diamond Luxe!  </h2>
+    <h2 style="color:black;"> Welcome to Black Diamond Luxe!  </h2>
   </div>
   <ul>
     <li>Name: ${FullName}</li>
@@ -138,7 +138,7 @@ const orderPendingMssg = async (FullName, Email, OrderNumber, TotalAmount, Order
     <ul>
       <li>Order Number: ${OrderNumber}</li>
       <li>Order Date: ${OrderDate}</li>
-      <li>Total Amount: ${TotalAmount}</li>
+      <li>Total Amount: $${TotalAmount}</li>
     </ul>
 
     <ul>
@@ -229,7 +229,7 @@ const finalOrderStatusMssg = async (FullName, Email, OrderNumber, TotalAmount, O
           <ul>
             <li>Order Number: ${OrderNumber}</li>
             <li>Order Date: ${OrderDate}</li>
-            <li>Total Amount: ${TotalAmount}</li>
+            <li>Total Amount:$${TotalAmount}</li>
           </ul>
           <ul>
             ${orderItems}
@@ -272,8 +272,72 @@ const finalOrderStatusMssg = async (FullName, Email, OrderNumber, TotalAmount, O
 };
 
 
+const pendingOrderMssg = async (FullName, Email, OrderNumber, TotalAmount, OrderDate, Order, tag) => {
+  let orders = Order.split(',');
+  const orderItems = orders.map(order => `<li>${order.trim()}</li>`).join('');
+
+
+  const messageTemplate = `
+      <div>
+        <div>
+          <h2 style="color: red;"> Admin , you have a pending order</h2>
+        </div>
+        <ul>
+          <li>From,  Name: ${FullName}</li>
+          <li>Email: ${Email}</li>
+          <li>Reference Number: ${OrderNumber}</li>
+          <li>Cashapp Tag: ${tag}</li>
+        </ul>
+        <div>
+          <p>Dear Admin, Please proceed to accept or reject </p>
+           <a href='https://urgent-buy-frontend.vercel.app/adminLogin'> </a>
+          <ul>
+            <li>Order Date: ${OrderDate}</li>
+            <li>Total Amount:$${TotalAmount}</li>
+          </ul>
+          <ul>
+            ${orderItems}
+          </ul>
+          <p>
+            Best regards,
+            <br/>
+            The Black Diamond Luxe Team
+          </p>
+          <p>
+       
+          </p>
+        </div>
+      </div>`;
+
+  const trasporter = nodeMailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GOOGLE_EMAIL,
+      pass: process.env.GOOGLE_PASSWORD
+    }
+  })
+
+  const mailOptions = {
+    from: process.env.GOOGLE_EMAIL,
+    to: process.env.GOOGLE_EMAIL,
+    subject: 'New Order',
+    html: messageTemplate,
+    text: `Hello Admin`
+  }
+
+  try {
+    trasporter.sendMail(mailOptions)
+    console.log('Email sent successfully');
+
+  } catch (error) {
+    console.log('Email couldnt send unfortunately', error);
+  }
+
+};
 
 
 
 
-module.exports = { sendUserOtp, signUpMssg, orderPendingMssg, finalOrderStatusMssg }
+
+
+module.exports = { sendUserOtp, signUpMssg, orderPendingMssg, finalOrderStatusMssg , pendingOrderMssg }
