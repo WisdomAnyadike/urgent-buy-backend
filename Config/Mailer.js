@@ -24,7 +24,7 @@ const sendUserOtp = async (Otp, FullName, Email) => {
    To reset your password, Your OTP is : ${Otp}
    </p>
  </div>
- <p style="color: black;"><i> Urgent Buy </i></p>
+ <p style="color: black;"><i> Black Diamond Luxury </i></p>
 </div>
 `
 
