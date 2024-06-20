@@ -1,6 +1,4 @@
 const express = require('express');
-const https = require('https');
-const fs = require('fs');
 const env = require('dotenv').config()
 const connectDb = require('./Config/Dbconnect');
 const cors = require('cors');
@@ -13,14 +11,7 @@ const Router5 = require('./Routes/AdminRoutes');
 
 const app = express()
 
-const options = {
-    key: fs.readFileSync('/path/to/your/private.key'),
-    cert: fs.readFileSync('/path/to/your/certificate.crt'),
-    ca: fs.readFileSync('/path/to/your/ca_bundle.crt'), // If you have intermediate certificates
-    secureOptions: https.constants.SSL_OP_NO_TLSv1 | https.constants.SSL_OP_NO_TLSv1_1,
-    ciphers: 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA256:ECDHE-RSA-AES128-SHA256',
-    honorCipherOrder: true
-  };
+
 
 const port = 4000 || process.env.Port
 
@@ -53,8 +44,8 @@ app.use('/Api/Admin' , Router5 )
 
 
 
-https.createServer(options, app).listen(port, () => {
-    console.log(`App is running on https://localhost:${port}`);
+app.listen(port, () => {
+    console.log(`App is running on http://localhost:${port}`);
   });
   
 
