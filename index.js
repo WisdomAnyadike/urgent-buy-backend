@@ -10,32 +10,9 @@ const Router5 = require('./Routes/AdminRoutes');
 
 
 const app = express()
-
-
-
 const port = 4000 || process.env.Port
-
 app.use(express.json({extended: true , limit:'500mb'}))
-
-
-const allowedOrigins = [
-    'https://blackdiamondluxe-sfv6.onrender.com',
-    'https://blackdiamondluxe-eotr.onrender.com',
-    'https://www.blackdiamondluxe.com'
-  ];
-  
-  app.use(cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS: ' + origin));
-      }
-    }
-  }));
-
-
-
+app.use(cors({origin:'*'}))
 app.use('/Api/User' , Router )
 app.use('/Api/Products' , Router2  )
 app.use('/Api/Notify' , Router3  )
@@ -44,9 +21,24 @@ app.use('/Api/Admin' , Router5 )
 
 
 
-app.listen(port, () => {
-    console.log(`App is running on http://localhost:${port}`);
-  });
-  
+app.listen(port , ()=> {
+    console.log(`app is running on http://localhost:${port}`);
+})
 
 connectDb()
+
+// const allowedOrigins = [
+//     'https://blackdiamondluxe-sfv6.onrender.com',
+//     'https://blackdiamondluxe-eotr.onrender.com',
+//     'https://www.blackdiamondluxe.com'
+//   ];
+  
+//   app.use(cors({
+//     origin: function (origin, callback) {
+//       if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error('Not allowed by CORS: ' + origin));
+//       }
+//     }
+//   }));
