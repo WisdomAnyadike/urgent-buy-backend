@@ -18,7 +18,7 @@ const sendUserOtp = async (Otp, FullName, Email) => {
 
    </p>
    <p>
-   We have sent you this email in response to your request to reset your password on company name.
+   We have sent you this email in response to your request to reset your password on blackdiamondluxe.com.
    </p>
    <p>     
    To reset your password, Your OTP is : ${Otp}
@@ -77,10 +77,10 @@ const signUpMssg = async (FullName, Email) => {
     <p>
     Happy shopping!
     Best,
-   The [Your App Name] Team
+   The Black Diamond Luxe Team
     </p>
     <p>     
-    P.S. Follow us on [social media links] for updates and exclusive offers!
+    P.S. Follow us on social media for updates and exclusive offers!
     </p>
   </div>
   <p style="color: black;"><i> Black Diamond Luxury </i></p>
